@@ -1,10 +1,14 @@
 package linalg;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static linalg.MathHelper.gcd;
 
 public class Frac {
     private int numerator;
     private int denominator;
+    private static final Pattern PATTERN = Pattern.compile("-?\\d+\\/-?\\d+\\s*", Pattern.CASE_INSENSITIVE);
 
     public Frac(int numerator, int denominator) {
         this.numerator = numerator;
@@ -15,6 +19,22 @@ public class Frac {
     public Frac(int numerator) {
         this.numerator = numerator;
         denominator = 1;
+    }
+
+    public Frac(String fractionString){
+        Frac tempFrac = parseFrac(fractionString);
+        numerator = tempFrac.numerator;
+        denominator = tempFrac.denominator;
+        this.cancel();
+    }
+
+    public static Frac parseFrac(String s){
+        Matcher matcher = PATTERN.matcher(s);
+        if(!matcher.matches()){
+            throw new NumberFormatException("Not a valid fraction");
+        }
+        String[] parts = s.split("/");
+        return new Frac(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
     }
 
     public int getNumerator() {
@@ -34,6 +54,11 @@ public class Frac {
     @Override
     public String toString() {
         return (isInteger())? String.valueOf(numerator) : String.format("%s/%s", numerator, denominator);
+    }
+
+    @Override
+    public Frac clone() {
+        return new Frac(numerator, denominator);
     }
 
     public boolean isInteger() {
