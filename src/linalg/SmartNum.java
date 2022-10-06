@@ -18,12 +18,13 @@ public class SmartNum {
         fracValue = value;
         doubleValue = value.approx();
         bestType = NumberType.FRACTION;
+        tryToImprove();
     }
 
     public SmartNum(double value){
-        //TODO: Add some magic: Cast decimal representations of fractions to Frac (using the 10* trick and then canceling). Ex: 1.25 -> 5/4
         doubleValue = value;
         bestType = NumberType.DOUBLE;
+        tryToImprove();
     }
 
     public SmartNum(String value){
@@ -33,48 +34,59 @@ public class SmartNum {
             fracValue = new Frac(parsedValue);
             doubleValue = parsedValue;
             bestType = NumberType.INTEGER;
-            return;
-        } catch (NumberFormatException e) {}
-        try { //Try to parse to DOUBLE
-            double castedDouble = Double.parseDouble(value);
-            if(canBeInt(castedDouble)){
-                intValue = (int)castedDouble;
-                fracValue = new Frac((int)castedDouble);
-                doubleValue = castedDouble;
-                bestType = NumberType.INTEGER;
-                return;
+        } catch (NumberFormatException e1) {
+            try { //Try to parse to DOUBLE
+                doubleValue = Double.parseDouble(value);
+                bestType = NumberType.DOUBLE;
+            } catch (NumberFormatException e2) {
+                try { //Try to parse to FRAC
+                    Frac castedFrac = Frac.parseFrac(value);
+                    setFrac(castedFrac);
+                } catch (NumberFormatException e3) {
+                    throw new NumberFormatException("This number type is not available");
+                }
             }
-            doubleValue = castedDouble;
-            bestType = NumberType.DOUBLE;
-            return;
-        } catch (NumberFormatException e) {}
-        try { //Try to parse to FRAC
-            Frac castedFrac = Frac.parseFrac(value);
-            fracValue = castedFrac;
-            doubleValue = castedFrac.approx();
-            bestType = NumberType.FRACTION;
-            return;
-        } catch (NumberFormatException e) {}
-        throw new NumberFormatException("This number type is not available");
+        }
+        tryToImprove();
     }
 
-    public void tryToImprove(){
-        //TODO: Try to cast double to Frac once the constructor has a method that also does that
+    public boolean tryToImprove(){
         switch (bestType){
-            case INTEGER -> {}
+            case INTEGER -> {
+                return false;
+            }
             case FRACTION -> {
                 if(fracValue.isInteger()){
                     setInt(fracValue);
                 }
+                return true;
             }
             case DOUBLE -> {
                 if(canBeInt(doubleValue)){
                     intValue = (int) doubleValue;
                     fracValue = new Frac(intValue);
                     bestType = NumberType.INTEGER;
+                    return true;
+                } else {
+                    return tryToSetFracFromDouble(doubleValue);
                 }
             }
         }
+        return false;
+    }
+
+    public boolean tryToSetFracFromDouble(double value) {
+        int zeros = 0;
+        while(!canBeInt(value)){
+            value = value * 10;
+            zeros++;
+        }
+        Frac frac = new Frac((int) value, (int) Math.pow(10, zeros));
+        if (frac.getNumerator() != value) {
+            setFrac(frac);
+           return true;
+        }
+        return false;
     }
 
     private void setInt(Frac value){ //Set the current type to INTEGER from a Fraction of the form x/1
@@ -82,6 +94,12 @@ public class SmartNum {
         fracValue = value;
         doubleValue = value.getNumerator();
         bestType = NumberType.INTEGER;
+    }
+
+    private void setFrac(Frac frac) {
+        fracValue = frac;
+        doubleValue = fracValue.approx();
+        bestType = NumberType.FRACTION;
     }
 
     public SmartNum add(int summand){
