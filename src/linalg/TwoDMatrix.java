@@ -120,7 +120,7 @@ public class TwoDMatrix {
      */
     public SmartNum get(int row, int column) {
         try {
-            return matrix[row][column];
+            return new SmartNum(matrix[row][column].toString()); // Has to be a new SmartNum, otherwise it will be mutable
         } catch(ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
             return null;
