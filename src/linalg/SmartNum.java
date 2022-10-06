@@ -75,7 +75,7 @@ public class SmartNum {
         return false;
     }
 
-    public boolean tryToSetFracFromDouble(double value) {
+    private boolean tryToSetFracFromDouble(double value) {
         int zeros = 0;
         while(!canBeInt(value)){
             value = value * 10;
