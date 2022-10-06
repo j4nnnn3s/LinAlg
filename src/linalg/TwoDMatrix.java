@@ -31,7 +31,6 @@ public class TwoDMatrix {
         String seperator = ",";
         String row = "";
         int rows = 0;
-        int columns = 0;
         File file = new File(path);
         Scanner sc = new Scanner(file);
 
@@ -40,7 +39,7 @@ public class TwoDMatrix {
             row = sc.nextLine();
         }
 
-        columns = row.split(",").length;
+        int columns = row.split(",").length;
         matrix = new SmartNum[rows][columns];
         sc.close();
         sc = new Scanner(file);
