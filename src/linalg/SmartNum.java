@@ -1,6 +1,6 @@
 package linalg;
 
-public class SmartNum {
+public class SmartNum extends MathObject {
 
     private NumberType bestType;
     private int intValue;
@@ -8,8 +8,7 @@ public class SmartNum {
     private double doubleValue;
 
     public SmartNum(int value){
-        setInt(value);
-    }
+        setInt(value);}
 
     public SmartNum(Frac value){
         setFrac(value);
@@ -244,6 +243,10 @@ public class SmartNum {
             }
         }
         return false;
+    }
+
+    public boolean equals(SmartNum s) {
+        return doubleValue == s.doubleValue;
     }
 
     private enum NumberType {
