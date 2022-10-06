@@ -179,4 +179,15 @@ public class TwoDMatrix {
         writer.close();
     }
 
+    /**
+     * Checks if a row at a given index in the matrix is zero
+     * @param rowIndex Index of the to checking row
+     * @return True if all elements are zero
+     */
+    public boolean isRowZero(int rowIndex) {
+        SmartNum[] row = matrix[rowIndex];
+        for (SmartNum element : row) if (!element.isZero()) return false;
+        return true;
+    }
+
 }
