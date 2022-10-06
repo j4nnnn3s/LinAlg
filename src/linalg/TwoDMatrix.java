@@ -23,7 +23,7 @@ public class TwoDMatrix {
     }
 
     /**
-     * Constructor for a 2D-matrix, loading the matrix from a csv file. Values in the file should be seperated by comma
+     * Constructor for a 2D-matrix, loading the matrix from a csv file. Values in the file should be separated by comma
      * @param path The path of the csv File
      * @throws FileNotFoundException If the File doesn't exist our couldn't be accessed
      */
