@@ -28,7 +28,6 @@ public class TwoDMatrix {
      * @throws FileNotFoundException If the File doesn't exist our couldn't be accessed
      */
     public TwoDMatrix(String path) throws FileNotFoundException {
-        String seperator = ",";
         String row = "";
         int rows = 0;
         File file = new File(path);
