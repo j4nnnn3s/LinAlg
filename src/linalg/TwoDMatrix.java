@@ -1,5 +1,12 @@
 package linalg;
 
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 /**
  * Object to operate with two-dimensional matrices
  */
@@ -8,11 +15,46 @@ public class TwoDMatrix {
     private SmartNum[][] matrix;
 
     /**
-     * Constructor for a 2D-matrix
+     * Constructor for a 2D-matrix from a given SmartNum 2D-Array
      * @param matrix 2D-Array of SmartNum containing the matrix
      */
     public TwoDMatrix(SmartNum[][] matrix) {
         this.matrix = matrix;
+    }
+
+    /**
+     * Constructor for a 2D-matrix, loading the matrix from a csv file. Values in the file should be seperated by comma
+     * @param path The path of the csv File
+     * @throws FileNotFoundException If the File doesn't exist our couldn't be accessed
+     */
+    public TwoDMatrix(String path) throws FileNotFoundException {
+        String seperator = ",";
+        String row = "";
+        int rows = 0;
+        int columns = 0;
+        File file = new File(path);
+        Scanner sc = new Scanner(file);
+
+        while(sc.hasNext()) {
+            rows++;
+            row = sc.nextLine();
+        }
+
+        columns = row.split(",").length;
+        matrix = new SmartNum[rows][columns];
+        sc.close();
+        sc = new Scanner(file);
+
+        int currentRow = 0;
+        while(sc.hasNext()) {
+            row = sc.next();
+            String[] rowSplited = row.split(",");
+            for (int column = 0; column < rowSplited.length; column++) {
+                matrix[currentRow][column] = new SmartNum(rowSplited[column]);
+            }
+            currentRow++;
+        }
+        sc.close();
     }
 
     /**
@@ -123,4 +165,22 @@ public class TwoDMatrix {
         }
         matrix = newMatrix;
     }
+
+    /**
+     * Write the 2D-Matrix into a csv file, values separated by commas
+     * @param path Path of the csv file
+     * @throws IOException When an error while writing occurs
+     */
+    public void exportToCsv(String path) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+        for(int i = 0; i < numberOfRows(); i++) {
+            for(int j = 0; j < numberOfColumns(); j++) {
+                writer.append(get(i,j).toString());
+                if (j != numberOfColumns() - 1) writer.append(",");
+            }
+            if (i != numberOfRows()) writer.append("\n");
+        }
+        writer.close();
+    }
+
 }
