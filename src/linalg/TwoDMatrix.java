@@ -62,7 +62,7 @@ public class TwoDMatrix {
      */
     @Override
     public String toString(){
-        StringBuilder returnString = new StringBuilder(new String());
+        StringBuilder returnString = new StringBuilder();
         int[] longest = new int[matrix[0].length];
         for(SmartNum[] row : matrix){
             for(int i = 0; i < row.length; i++){
