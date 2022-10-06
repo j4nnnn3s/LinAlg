@@ -95,15 +95,15 @@ public class Frac {
         return divide(new Frac(number));
     }
 
+    public Frac add(int number) {
+        return add(new Frac(number));
+    }
+
     public Frac add(Frac other) {
         numerator = other.getDenominator() * numerator + other.getNumerator() * denominator;
         denominator = denominator * other.getDenominator();
         cancel();
         return this;
-    }
-
-    public Frac add(int number) {
-        return add(new Frac(number));
     }
 
     public Frac subtract(Frac other) {

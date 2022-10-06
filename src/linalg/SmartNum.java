@@ -8,36 +8,25 @@ public class SmartNum {
     private double doubleValue;
 
     public SmartNum(int value){
-        intValue = value;
-        fracValue = new Frac(value);
-        doubleValue = value;
-        bestType = NumberType.INTEGER;
+        setInt(value);
     }
 
     public SmartNum(Frac value){
-        fracValue = value;
-        doubleValue = value.approx();
-        bestType = NumberType.FRACTION;
-        tryToImprove();
+        setFrac(value);
     }
 
     public SmartNum(double value){
-        doubleValue = value;
-        bestType = NumberType.DOUBLE;
-        tryToImprove();
+        setDouble(value);
     }
 
     public SmartNum(String value){
         try { //Try to parse to INTEGER
-            int parsedValue = Integer.parseInt(value);
-            intValue = parsedValue;
-            fracValue = new Frac(parsedValue);
-            doubleValue = parsedValue;
-            bestType = NumberType.INTEGER;
+            int parsedIntValue = Integer.parseInt(value);
+            setInt(parsedIntValue);
         } catch (NumberFormatException e1) {
             try { //Try to parse to DOUBLE
-                doubleValue = Double.parseDouble(value);
-                bestType = NumberType.DOUBLE;
+                 double parsedDoubleValue = Double.parseDouble(value);
+                 setDouble(parsedDoubleValue);
             } catch (NumberFormatException e2) {
                 try { //Try to parse to FRAC
                     Frac castedFrac = Frac.parseFrac(value);
@@ -78,6 +67,7 @@ public class SmartNum {
     private boolean tryToSetFracFromDouble(double value) {
         int zeros = 0;
         while(!canBeInt(value)){
+            if (zeros > 10) return false;
             value = value * 10;
             zeros++;
         }
@@ -96,87 +86,58 @@ public class SmartNum {
         bestType = NumberType.INTEGER;
     }
 
+    private void setInt(int value) {
+        intValue = value;
+        fracValue = new Frac(value);
+        doubleValue = value;
+        bestType = NumberType.INTEGER;
+    }
+
+    private void setDouble(double value) {
+        doubleValue = value;
+        bestType = NumberType.DOUBLE;
+        tryToImprove();
+    }
+
     private void setFrac(Frac frac) {
         fracValue = frac;
         doubleValue = fracValue.approx();
         bestType = NumberType.FRACTION;
+        tryToImprove();
     }
 
     public SmartNum add(int summand){
         switch (bestType) {
-            case INTEGER -> {
-                intValue += summand;
-            }
-            case FRACTION -> {
-                fracValue = fracValue.add(new Frac(summand));
-                if (fracValue.isInteger()) {
-                    intValue = fracValue.getNumerator();
-                    bestType = NumberType.INTEGER;
-                }
-            }
-            case DOUBLE -> {
-                double result = doubleValue + summand;
-                doubleValue = result;
-                if (canBeInt(result)) {
-                    intValue = (int) result;
-                    bestType = NumberType.INTEGER;
-                }
-            }
+            case INTEGER -> setInt(summand + intValue);
+            case FRACTION -> setFrac(fracValue.add(new Frac(summand)));
+            case DOUBLE -> setDouble(doubleValue + summand);
         }
-        tryToImprove();
         return this;
     }
 
     public SmartNum add(Frac summand){
-        if(summand.isInteger()){
-            return add(summand.getNumerator());
-        }
         switch (bestType) {
-            case INTEGER -> {
-                fracValue = new Frac(intValue).add(summand);
-                bestType = NumberType.FRACTION;
-                doubleValue = fracValue.approx();
-            }
-            case FRACTION -> {
-                fracValue = fracValue.add(summand);
-            }
-            case DOUBLE -> {
-                doubleValue += summand.approx();
-            }
+            case INTEGER -> setFrac(summand.add(intValue));
+            case FRACTION -> setFrac(fracValue.add(summand));
+            case DOUBLE -> setDouble(doubleValue + summand.approx());
         }
-        tryToImprove();
         return this;
     }
 
     public SmartNum add(double summand){
         switch (bestType) {
-            case INTEGER -> {
-                doubleValue = summand + intValue;
-                bestType = NumberType.DOUBLE;
-            }
-            case FRACTION -> {
-                doubleValue = fracValue.approx() + summand;
-                bestType = NumberType.DOUBLE;
-            }
-            case DOUBLE -> {
-                doubleValue += summand;
-            }
+            case INTEGER -> setDouble(summand + intValue);
+            case FRACTION -> setDouble(fracValue.approx() + summand);
+            case DOUBLE -> setDouble(summand + doubleValue);
         }
-        tryToImprove();
         return this;
     }
 
     public SmartNum add(SmartNum summand){
         switch (summand.bestType){
-            case INTEGER -> {
-                add(summand.intValue);
-            }
-            case FRACTION -> {
-                add(summand.fracValue);
-            }
-            case DOUBLE -> {
-                add(summand.doubleValue);
-            }
+            case INTEGER -> add(summand.intValue);
+            case FRACTION -> add(summand.fracValue);
+            case DOUBLE -> add(summand.doubleValue);
         }
         return this;
     }
@@ -194,12 +155,64 @@ public class SmartNum {
     }
 
     public SmartNum subtract(SmartNum subtrahend){
-        //return add(subtrahend.mult(-1));
-        //TODO: Implement multiplication so this works
-        return new SmartNum("0");
+        return add(subtrahend.mult(-1));
     }
 
-    //TODO: Implement multiplication and division
+    public SmartNum mult(int factor) {
+        switch (bestType){
+            case INTEGER -> setInt(factor * intValue);
+            case FRACTION -> setFrac(fracValue.mult(factor));
+            case DOUBLE -> setDouble(doubleValue * factor);
+        }
+        return this;
+    }
+
+    public SmartNum mult(Frac factor) {
+        switch (bestType){
+            case INTEGER -> setFrac(factor.mult(intValue));
+            case FRACTION -> setFrac(fracValue.mult(factor));
+            case DOUBLE -> setDouble(doubleValue * factor.approx());
+        }
+        return this;
+    }
+
+    public SmartNum mult(double factor) {
+        switch (bestType){
+            case INTEGER -> setDouble(factor * intValue);
+            case FRACTION, DOUBLE -> setDouble(doubleValue * factor);
+        }
+        return this;
+    }
+
+    public SmartNum mult(SmartNum factor) {
+        switch (factor.bestType){
+            case INTEGER -> mult(factor.intValue);
+            case FRACTION -> mult(factor.fracValue);
+            case DOUBLE -> mult(factor.doubleValue);
+        }
+        return this;
+    }
+
+    public SmartNum divide(int value) {
+        return mult(1.0d/value);
+    }
+
+    public SmartNum divide(Frac value) {
+        return mult(value.invert());
+    }
+
+    public SmartNum divide(double value) {
+        return mult(1.0d/value);
+    }
+
+    public SmartNum divide(SmartNum value) {
+        switch (value.bestType){
+            case INTEGER -> divide(value.intValue);
+            case FRACTION -> divide(value.fracValue);
+            case DOUBLE -> divide(value.doubleValue);
+        }
+        return this;
+    }
 
     @Override
     public String toString(){
