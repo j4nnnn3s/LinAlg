@@ -198,7 +198,7 @@ public class SmartNum {
     }
 
     public SmartNum divide(Frac value) {
-        return mult(value.invert());
+        return mult(value.clone().invert());
     }
 
     public SmartNum divide(double value) {
