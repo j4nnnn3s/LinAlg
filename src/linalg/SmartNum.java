@@ -168,7 +168,7 @@ public class SmartNum extends MathObject {
 
     public SmartNum mult(Frac factor) {
         switch (bestType){
-            case INTEGER -> setFrac(factor.mult(intValue));
+            case INTEGER -> setFrac(factor.clone().mult(intValue));
             case FRACTION -> setFrac(fracValue.mult(factor));
             case DOUBLE -> setDouble(doubleValue * factor.approx());
         }
