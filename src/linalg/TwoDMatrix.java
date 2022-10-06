@@ -63,7 +63,7 @@ public class TwoDMatrix {
      */
     @Override
     public String toString(){
-        String returnString = new String();
+        StringBuilder returnString = new StringBuilder(new String());
         int[] longest = new int[matrix[0].length];
         for(SmartNum[] row : matrix){
             for(int i = 0; i < row.length; i++){
@@ -72,18 +72,16 @@ public class TwoDMatrix {
             }
         }
         for(SmartNum[] row : matrix){
-            returnString += "(";
+            returnString.append("(");
             for(int i = 0; i < row.length; i++){
                 int len = row[i].toString().length();
-                returnString += row[i].toString();
-                for (int j = 0; j < longest[i] - len + 1; j++) {
-                    returnString += " ";
-                }
+                returnString.append(row[i].toString());
+                returnString.append(" ".repeat(Math.max(0, longest[i] - len + 1)));
             }
-            returnString = returnString.substring(0,returnString.length() - 1);
-            returnString += ")\n";
+            returnString = new StringBuilder(returnString.substring(0, returnString.length() - 1));
+            returnString.append(")\n");
         }
-        return returnString;
+        return returnString.toString();
     }
 
     /**
