@@ -11,6 +11,7 @@ public class Frac {
     private static final Pattern PATTERN = Pattern.compile("-?\\d+\\/-?\\d+\\s*", Pattern.CASE_INSENSITIVE);
 
     public Frac(int numerator, int denominator) {
+        if (denominator == 0) throw new ArithmeticException("Division by zero");
         this.numerator = numerator;
         this.denominator = denominator;
         this.cancel();
@@ -25,6 +26,7 @@ public class Frac {
         Frac tempFrac = parseFrac(fractionString);
         numerator = tempFrac.numerator;
         denominator = tempFrac.denominator;
+        if (denominator == 0) throw new ArithmeticException("Division by zero");
         this.cancel();
     }
 
@@ -67,6 +69,7 @@ public class Frac {
     }
 
     public Frac invert() {
+        if (numerator == 0) throw new ArithmeticException("Division by zero");
         int oldDenominator = denominator;
         denominator = numerator;
         numerator = oldDenominator;
@@ -85,6 +88,7 @@ public class Frac {
     }
 
     public Frac divide(Frac other) {
+        if (other.numerator == 0) throw new ArithmeticException("Division by zero");
         Frac calcOther = new Frac(other.getNumerator(), other.getDenominator());
         mult(calcOther.invert());
         cancel();
@@ -92,6 +96,7 @@ public class Frac {
     }
 
     public Frac divide(int number) {
+        if (number == 0) throw new ArithmeticException("Division by zero");
         return divide(new Frac(number));
     }
 

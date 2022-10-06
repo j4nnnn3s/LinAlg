@@ -194,18 +194,22 @@ public class SmartNum {
     }
 
     public SmartNum divide(int value) {
+        if (value == 0) throw new ArithmeticException("Division by zero");
         return mult(1.0d/value);
     }
 
     public SmartNum divide(Frac value) {
+        if (value.getNumerator() == 0) throw new ArithmeticException("Division by zero");
         return mult(value.clone().invert());
     }
 
     public SmartNum divide(double value) {
+        if (value == 0) throw new ArithmeticException("Division by zero");
         return mult(1.0d/value);
     }
 
     public SmartNum divide(SmartNum value) {
+        if (value.isZero()) throw new ArithmeticException("Division by zero");
         switch (value.bestType){
             case INTEGER -> divide(value.intValue);
             case FRACTION -> divide(value.fracValue);
@@ -225,6 +229,21 @@ public class SmartNum {
 
     public static boolean canBeInt(double value){
         return (int) value == value;
+    }
+
+    public boolean isZero() {
+        switch (bestType) {
+            case INTEGER -> {
+                return intValue == 0;
+            }
+            case FRACTION -> {
+              return fracValue.getNumerator() == 0;
+            }
+            case DOUBLE -> {
+                return doubleValue == 0.0d;
+            }
+        }
+        return false;
     }
 
     private enum NumberType {
