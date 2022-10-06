@@ -1,31 +1,23 @@
 package linalg;
 
 public class TwoDMatrix {
-    private Frac[][] matrix;
+    private SmartNum[][] matrix;
 
-    public TwoDMatrix(Frac[][] matrix) {
+    public TwoDMatrix(SmartNum[][] matrix) {
         this.matrix = matrix;
-    }
-
-    public TwoDMatrix(int[][] matrix) {
-        Frac[][] fracMatrix = new Frac[matrix.length][matrix[0].length];
-        for(int i = 0; i < matrix.length; i++)
-            for(int j = 0; j < matrix[i].length; j++)
-                fracMatrix[i][j] = new Frac(matrix[i][j]);
-        this.matrix = fracMatrix;
     }
 
     @Override
     public String toString(){
         String returnString = new String();
         int[] longest = new int[matrix[0].length];
-        for(Frac[] row : matrix){
+        for(SmartNum[] row : matrix){
             for(int i = 0; i < row.length; i++){
                 int len = row[i].toString().length();
                 if (len > longest[i]) longest[i] = len;
             }
         }
-        for(Frac[] row : matrix){
+        for(SmartNum[] row : matrix){
             returnString += "(";
             for(int i = 0; i < row.length; i++){
                 int len = row[i].toString().length();
@@ -48,7 +40,7 @@ public class TwoDMatrix {
         return matrix[0].length;
     }
 
-    public void set(int row, int column, Frac value) {
+    public void set(int row, int column, SmartNum value) {
         try {
             matrix[row][column] = value;
         } catch(ArrayIndexOutOfBoundsException e)  {
@@ -56,7 +48,7 @@ public class TwoDMatrix {
         }
     }
 
-    public Frac get(int row, int column) {
+    public SmartNum get(int row, int column) {
         try {
             return matrix[row][column];
         } catch(ArrayIndexOutOfBoundsException e) {
@@ -66,7 +58,7 @@ public class TwoDMatrix {
     }
 
     public void deleteRow(int row) {
-        Frac[][] newMatrix = new Frac[numberOfRows()-1][numberOfColumns()];
+        SmartNum[][] newMatrix = new SmartNum[numberOfRows()-1][numberOfColumns()];
         for (int i = 0; i <= newMatrix.length; i++) {
             if (i < row) {
                 newMatrix[i] = matrix[i];
@@ -79,7 +71,7 @@ public class TwoDMatrix {
     }
 
     public void deleteColumn(int column) {
-        Frac[][] newMatrix = new Frac[numberOfRows()][numberOfColumns()-1];
+        SmartNum[][] newMatrix = new SmartNum[numberOfRows()][numberOfColumns()-1];
         for (int j = 0; j < newMatrix.length; j++) {
             for (int i = 0; i <= newMatrix[0].length; i++) {
                 if (i < column) {
