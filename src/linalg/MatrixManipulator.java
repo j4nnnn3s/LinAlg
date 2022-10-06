@@ -1,7 +1,15 @@
 package linalg;
 
+/**
+ * Collection of manipulations for matrices
+ */
 public class MatrixManipulator {
 
+    /**
+     * Method to solve a matrix via the gauss algorithm
+     * @param matrix Matrix to solve
+     * @return Solved matrix or null if the matrix has no solutions
+     */
     public static TwoDMatrix solveGauss(TwoDMatrix matrix) {
         try {
             int maxDiag = Math.min(matrix.numberOfColumns() - 1, matrix.numberOfRows());
