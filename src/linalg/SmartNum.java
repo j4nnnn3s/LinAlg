@@ -194,7 +194,12 @@ public class SmartNum extends MathObject {
 
     public SmartNum divide(int value) {
         if (value == 0) throw new ArithmeticException("Division by zero");
-        return mult(1.0d/value);
+        switch (bestType) {
+            case INTEGER -> setFrac(new Frac(intValue, value));
+            case FRACTION -> setFrac(fracValue.divide(value));
+            case DOUBLE -> mult(1.0d/value);
+        }
+        return this;
     }
 
     public SmartNum divide(Frac value) {
