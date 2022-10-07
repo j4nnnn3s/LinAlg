@@ -16,8 +16,7 @@ public class Frac {
 
     /**
      * Constructor for Frac via numerator and denominator
-     *
-     * @param numerator   Numerator of the fraction
+     * @param numerator Numerator of the fraction
      * @param denominator Denominator of the fraction
      */
     public Frac(int numerator, int denominator) {
@@ -29,7 +28,6 @@ public class Frac {
 
     /**
      * Constructor for Frac with one int. Because only one number is given, the denominator will be 1
-     *
      * @param numerator Numerator of the fraction
      */
     public Frac(int numerator) {
@@ -39,10 +37,9 @@ public class Frac {
 
     /**
      * Constructor for Frac by parsing a String
-     *
      * @param fractionString String to be parsed
      */
-    public Frac(String fractionString) {
+    public Frac(String fractionString){
         Frac tempFrac = parseFrac(fractionString);
         numerator = tempFrac.numerator;
         denominator = tempFrac.denominator;
@@ -52,26 +49,24 @@ public class Frac {
 
     /**
      * Parser from a string to a Frac
-     *
      * @param s The string that will be passed
      * @return The frac object equivalent to the content of the string
      * @throws NumberFormatException if the string is not a valid fraction
      */
-    public static Frac parseFrac(String s) {
+    public static Frac parseFrac(String s){
         Matcher matcher = PATTERN.matcher(s);
-        if (!matcher.matches()) {
+        if(!matcher.matches()){
             throw new NumberFormatException("Not a valid fraction");
         }
         String[] parts = s.split("/");
-        if (Integer.parseInt(parts[1]) == 0) {
+        if(Integer.parseInt(parts[1]) == 0 && Integer.parseInt(parts[0]) != 0) { //Fraction can be 0/0 but not 1/0
             throw new ArithmeticException("Division by zero");
         }
-        return new Frac(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+        return new Frac(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
     }
 
     /**
      * Function to get the numerator
-     *
      * @return Numerator of the fraction
      */
     public int getNumerator() {
@@ -80,7 +75,6 @@ public class Frac {
 
     /**
      * Function to get the denominator
-     *
      * @return Denominator of the fraction
      */
     public int getDenominator() {
@@ -98,17 +92,15 @@ public class Frac {
 
     /**
      * Converting the fraction into a string
-     *
      * @return String equivalent ot the fraction
      */
     @Override
     public String toString() {
-        return (isInteger()) ? String.valueOf(numerator) : String.format("%s/%s", numerator, denominator);
+        return (isInteger())? String.valueOf(numerator) : String.format("%s/%s", numerator, denominator);
     }
 
     /**
      * Cloning the Frac
-     *
      * @return New object with the same content of the current Frac
      */
     @Override
@@ -118,7 +110,6 @@ public class Frac {
 
     /**
      * Checking if the fraction is an integer
-     *
      * @return True if the fraction is an integer
      */
     public boolean isInteger() {
@@ -128,7 +119,6 @@ public class Frac {
 
     /**
      * Reversing the fraction
-     *
      * @return The reversed/inverted fraction
      */
     public Frac invert() {
@@ -141,7 +131,6 @@ public class Frac {
 
     /**
      * Multiplying the fraction with another fraction
-     *
      * @param other A second fraction to multiply with
      * @return Result of the multiplication
      */
@@ -154,7 +143,6 @@ public class Frac {
 
     /**
      * Multiplying the fraction with an integer
-     *
      * @param number Integer to multiply with
      * @return Result of the multiplication
      */
@@ -164,7 +152,6 @@ public class Frac {
 
     /**
      * Dividing a fraction by another fraction
-     *
      * @param other A second fraction to divide by
      * @return Result of the division
      * @throws ArithmeticException if the second fraction is equal to 0
@@ -179,7 +166,6 @@ public class Frac {
 
     /**
      * Dividing a fraction by an integer
-     *
      * @param number Integer to divide by
      * @return Result of the division
      * @throws ArithmeticException if the integer is equal to 0
@@ -191,7 +177,6 @@ public class Frac {
 
     /**
      * Adding another fraction to the fraction
-     *
      * @param other The fraction to add
      * @return Result of the addition
      */
@@ -204,7 +189,6 @@ public class Frac {
 
     /**
      * Adding an integer to this fraction
-     *
      * @param number Integer to add
      * @return Result of the addition
      */
@@ -214,7 +198,6 @@ public class Frac {
 
     /**
      * Subtract a fraction from this fraction
-     *
      * @param other The fraction to subtract
      * @return Result of the subtraction
      */
@@ -227,7 +210,6 @@ public class Frac {
 
     /**
      * Subtract an integer from this fraction
-     *
      * @param number Integer to subtract
      * @return Result of the subtraction
      */
@@ -237,7 +219,6 @@ public class Frac {
 
     /**
      * Calculate a decimal value close to the fraction
-     *
      * @return The decimal value
      */
     public double approx() {
