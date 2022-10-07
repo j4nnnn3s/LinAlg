@@ -2,7 +2,8 @@ package linalg;
 
 abstract class MathObject {
 
-    public MathObject(String s) {}
+    public MathObject(String s) {
+    }
 
     MathObject() {
     }

@@ -21,9 +21,9 @@ public class SimpleSymbol {
     }
 
     public SimpleSymbol(SmartNum factor, char symbol, SmartNum power) {
-       this.factor = factor;
-       this.symbol = symbol;
-       this.power = power;
+        this.factor = factor;
+        this.symbol = symbol;
+        this.power = power;
     }
 
     public SimpleSymbol(String s) {
@@ -44,12 +44,12 @@ public class SimpleSymbol {
 
     private void parseSimpleSymbol(String s) {
         s = s.replace(" ", "");
-        if(!validSimpleSymbol(s)) {
+        if (!validSimpleSymbol(s)) {
             throw new NumberFormatException("Not a valid symbol");
         }
         if (s.contains("*")) s = s.replace("*", "");
         for (String element : s.split("")) {
-            if (element.matches("[a-z]|[A-Z]"))  {
+            if (element.matches("[a-z]|[A-Z]")) {
                 symbol = element.charAt(0);
                 s = s.replace(String.valueOf(symbol), "");
                 break;
@@ -75,11 +75,11 @@ public class SimpleSymbol {
     }
 
     public SimpleSymbol add(SimpleSymbol other) {
-       if (other.symbol == symbol && other.power == power) {
-           factor = factor.add(other.factor.clone());
-           return this;
-       }
-       throw new ArithmeticException("Symbols are not the same");
+        if (other.symbol == symbol && other.power == power) {
+            factor = factor.add(other.factor.clone());
+            return this;
+        }
+        throw new ArithmeticException("Symbols are not the same");
     }
 
     public SimpleSymbol subtract(SimpleSymbol other) {
@@ -100,18 +100,18 @@ public class SimpleSymbol {
     }
 
     public SimpleSymbol divide(SimpleSymbol other) {
-       if (other.symbol == symbol)  {
-           factor = factor.divide(other.factor.clone());
-           power = power.subtract(other.power.clone());
-           return this;
-       }
-       throw new ArithmeticException("Symbols are not the same");
+        if (other.symbol == symbol) {
+            factor = factor.divide(other.factor.clone());
+            power = power.subtract(other.power.clone());
+            return this;
+        }
+        throw new ArithmeticException("Symbols are not the same");
     }
 
     @Override
     public String toString() {
         if (power.equals(new SmartNum(1)) && factor.equals(new SmartNum(1)))
-           return String.valueOf(symbol);
+            return String.valueOf(symbol);
         else if (power.equals(new SmartNum(1)))
             return String.format("(%s) * %s", factor, symbol);
         else if (factor.equals(new SmartNum(1)))
