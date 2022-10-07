@@ -181,7 +181,9 @@ public class SimpleSymbol {
 
     @Override
     public String toString() {
-        if (power.equals(new SmartNum(1)) && factor.equals(new SmartNum(1)))
+        if (factor.equals(new SmartNum(0)))
+            return "0";
+        else if (power.equals(new SmartNum(1)) && factor.equals(new SmartNum(1)))
             return String.valueOf(symbol);
         else if (power.equals(new SmartNum(1)))
             return String.format("(%s) * %s", factor, symbol);
