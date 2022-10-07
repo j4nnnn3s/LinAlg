@@ -7,6 +7,7 @@ public class MatrixManipulator {
 
     /**
      * Method to solve a system of linear equations represented as coefficient matrix via the gauss algorithm
+     *
      * @param matrix Matrix to solve
      * @return Solved matrix or null if the matrix has no solutions
      */
@@ -14,7 +15,7 @@ public class MatrixManipulator {
         try {
             // maxDiag is the maximal number, over which can be iterated without leaving the matrix
             int maxDiag = Math.min(matrix.numberOfColumns() - 1, matrix.numberOfRows());
-            int movingFactor = 0; // It is possible, that the pivot might be 0. Thats why movingFactor
+            int movingFactor = 0; // It is possible, that the pivot might be 0. That's why movingFactor
             // Iterating over the matrix
             for (int diagPosition = 0; diagPosition < maxDiag; diagPosition++) {
 
@@ -24,7 +25,7 @@ public class MatrixManipulator {
                 // TODO: Sort matrix before
                 do {
                     pivot = matrix.get(diagPosition, diagPosition + movingFactor);
-                    if(pivot.isZero() && movingFactor < matrix.numberOfColumns() - 3) movingFactor++;
+                    if (pivot.isZero() && movingFactor < matrix.numberOfColumns() - 3) movingFactor++;
                     else break;
                 } while (pivot.isZero());
                 // When the whole line is zero, continue
@@ -66,7 +67,7 @@ public class MatrixManipulator {
                 // Getting the pivot element
                 do {
                     pivot = matrix.get(diagPosition, diagPosition + movingFactor);
-                    if(pivot.isZero() && movingFactor < matrix.numberOfColumns() - 3) movingFactor++;
+                    if (pivot.isZero() && movingFactor < matrix.numberOfColumns() - 3) movingFactor++;
                     else break;
                 } while (pivot.isZero());
                 // If all elements are zero, continue (should not be possible)
@@ -81,7 +82,7 @@ public class MatrixManipulator {
             return matrix;
         } catch (ArithmeticException e) {
             // As there has been an Arithmetic Exception, the matrix has either no solutions or (more likely) this implementation
-            // of the algorithem has still some bugs
+            // of the algorithm has still some bugs
             System.out.println("The matrix has no solutions!");
             return null;
         }

@@ -7,6 +7,7 @@ public class MathHelper {
 
     /**
      * Function to calculate the greatest common divisor
+     *
      * @param a First integer to calculate from
      * @param b Second integer to calculate from
      * @return Greatest common divisor
