@@ -231,6 +231,10 @@ public class SmartNum extends MathObject {
         };
     }
 
+    public SmartNum clone() {
+        return new SmartNum(toString());
+    }
+
     public static boolean canBeInt(double value){
         return (int) value == value;
     }
