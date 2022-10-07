@@ -75,7 +75,7 @@ public class SimpleSymbol {
     }
 
     public SimpleSymbol add(SimpleSymbol other) {
-       if (other.symbol == symbol) {
+       if (other.symbol == symbol && other.power == power) {
            factor = factor.add(other.factor.clone());
            return this;
        }
@@ -83,7 +83,7 @@ public class SimpleSymbol {
     }
 
     public SimpleSymbol subtract(SimpleSymbol other) {
-        if (other.symbol == symbol) {
+        if (other.symbol == symbol && other.power == power) {
             factor = factor.subtract(other.factor.clone());
             return this;
         }
@@ -93,6 +93,7 @@ public class SimpleSymbol {
     public SimpleSymbol mult(SimpleSymbol other) {
         if (other.symbol == symbol) {
             factor = factor.mult(other.factor.clone());
+            power = power.add(other.power.clone());
             return this;
         }
         throw new ArithmeticException("Symbols are not the same");
@@ -101,6 +102,7 @@ public class SimpleSymbol {
     public SimpleSymbol divide(SimpleSymbol other) {
        if (other.symbol == symbol)  {
            factor = factor.divide(other.factor.clone());
+           power = power.subtract(other.power.clone());
            return this;
        }
        throw new ArithmeticException("Symbols are not the same");
