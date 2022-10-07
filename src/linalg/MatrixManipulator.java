@@ -51,9 +51,9 @@ public class MatrixManipulator {
                 if (pivot.isZero()) continue;
 
                 matrix.set(diagPosition, diagPosition + movingFactor, new SmartNum(1));
-                SmartNum lastElement = matrix.get(diagPosition, matrix.numberOfColumns() - 1);
-                lastElement.divide(pivot);
-                matrix.set(diagPosition, matrix.numberOfColumns() - 1, lastElement);
+                for (int column = diagPosition + movingFactor + 1; column < matrix.numberOfColumns(); column++) {
+                    matrix.set(diagPosition, column, matrix.get(diagPosition, column).divide(pivot));
+                }
             }
             return matrix;
         } catch (ArithmeticException e) {
