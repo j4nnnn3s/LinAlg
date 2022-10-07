@@ -6,7 +6,7 @@ package linalg;
 public class MatrixManipulator {
 
     /**
-     * Method to solve a matrix via the gauss algorithm
+     * Method to solve a system of linear equations represented as coefficient matrix via the gauss algorithm
      * @param matrix Matrix to solve
      * @return Solved matrix or null if the matrix has no solutions
      */
