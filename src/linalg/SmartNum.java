@@ -78,7 +78,7 @@ public class SmartNum extends MathObject {
         return false;
     }
 
-    private void setInt(Frac value){ //Set the current type to INTEGER from a Fraction of the form x/1
+    private void setInt(Frac value){ //Set the current type to INTEGER from a Fraction of the form n/1
         intValue = value.getNumerator();
         fracValue = value;
         doubleValue = value.getNumerator();
@@ -240,18 +240,7 @@ public class SmartNum extends MathObject {
     }
 
     public boolean isZero() {
-        switch (bestType) {
-            case INTEGER -> {
-                return intValue == 0;
-            }
-            case FRACTION -> {
-              return fracValue.getNumerator() == 0;
-            }
-            case DOUBLE -> {
-                return doubleValue == 0.0d;
-            }
-        }
-        return false;
+        return doubleValue == 0d;
     }
 
     public boolean equals(SmartNum s) {
