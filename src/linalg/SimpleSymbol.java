@@ -3,6 +3,9 @@ package linalg;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class, holding a symbol and the affiliated power and factor
+ */
 public class SimpleSymbol {
 
     private char symbol;
@@ -14,34 +17,70 @@ public class SimpleSymbol {
             "(-?\\d*((\\.?|\\/?)\\d*)?\\s*\\*?\\s*)(?:[a-z]|[A-Z])(?:\\s*\\^?-?\\d*((\\.?|\\/?)\\d*)?\\s*)"
     );
 
+    /**
+     * Constructor for the SimpleSymbol with factor and symbol. Power will automatically be set to 1
+     * @param factor Factor of the SimpleSymbol
+     * @param symbol Character of the SimpleSymbol
+     */
     public SimpleSymbol(SmartNum factor, char symbol) {
         this.factor = factor;
         this.symbol = symbol;
         this.power = new SmartNum(1);
     }
 
+    /**
+     * Constructor for the SimpleSymbol, where all properties are set manual
+     * @param factor Factor of the SimpleSymbol
+     * @param symbol Character of the SimpleSymbol
+     * @param power Power of the SimpleSymbol
+     */
     public SimpleSymbol(SmartNum factor, char symbol, SmartNum power) {
         this.factor = factor;
         this.symbol = symbol;
         this.power = power;
     }
 
+    /**
+     * Constructing a SimpleSymbol by parsing a string
+     * @param s String to be parsed
+     */
     public SimpleSymbol(String s) {
         parseSimpleSymbol(s);
     }
 
+    /**
+     * Get the character of the symbol
+     * @return Character of the symbol
+     */
     public char getSymbol() {
         return symbol;
     }
 
+    /**
+     * Get the factor of the symbol
+     * @return Factor of the symbol
+     */
     public SmartNum getFactor() {
         return factor;
     }
 
+    /**
+     * Get the power of the symbol
+     * @return Power of the symbol
+     */
     public SmartNum getPower() {
         return power;
     }
 
+    /**
+     * Function that converts a string of on of the following spellings into a SimpleSymbol
+     * "[SmartNumber] * a"
+     * "[SmartNumber] * a ^ [SmartNumber]"
+     * " a ^ [SmartNumber]"
+     * "a"
+     * @param s String to be parsed
+     * @throws NumberFormatException When the string is not a valid SimpleSymbol
+     */
     private void parseSimpleSymbol(String s) {
         s = s.replace(" ", "");
         if (!validSimpleSymbol(s)) {
@@ -69,11 +108,22 @@ public class SimpleSymbol {
         }
     }
 
+    /**
+     * Function checks, if a string is a vaild SimpleSymbol and can be parsed
+     * @param s String to check
+     * @return Boolean, weather string can be parsed or not
+     */
     public boolean validSimpleSymbol(String s) {
-        Matcher matcher = PATTERN.matcher(s);
         return PATTERN.matcher(s).matches();
     }
 
+    /**
+     * Add two SimpleSymbols together. This is only possible, when both SimpleSymbols have the same symbol and is
+     * accomplished by adding the two factors.
+     * @param other SimpleSymbol to be added
+     * @return Result of the addition
+     * @throws ArithmeticException When both SimpleSymbols don't have the same symbol
+     */
     public SimpleSymbol add(SimpleSymbol other) {
         if (other.symbol == symbol && other.power == power) {
             factor = factor.add(other.factor.clone());
@@ -82,6 +132,13 @@ public class SimpleSymbol {
         throw new ArithmeticException("Symbols are not the same");
     }
 
+    /**
+     * Subtract a SimpleSymbol from the current one. This is only possible, when both SimpleSymbols have the same symbol
+     * and is accomplished by subtracting the other factor from the one of this factor.
+     * @param other SimpleSymbol to subtract from this one.
+     * @return Result of the subtraction
+     * @throws ArithmeticException When both SimpleSymbols don't have the same symbol
+     */
     public SimpleSymbol subtract(SimpleSymbol other) {
         if (other.symbol == symbol && other.power == power) {
             factor = factor.subtract(other.factor.clone());
@@ -90,6 +147,13 @@ public class SimpleSymbol {
         throw new ArithmeticException("Symbols are not the same");
     }
 
+    /**
+     * Multiply two SimpleSymbols. This is only possible, when both SimpleSymbols have the same symbol. This is accomplished
+     * by multiplying the factors and adding the powers.
+     * @param other SimpleSymbol to multiply with.
+     * @return Result of the multiplication
+     * @throws ArithmeticException When both SimpleSymbols don't have the same symbol
+     */
     public SimpleSymbol mult(SimpleSymbol other) {
         if (other.symbol == symbol) {
             factor = factor.mult(other.factor.clone());
@@ -99,6 +163,13 @@ public class SimpleSymbol {
         throw new ArithmeticException("Symbols are not the same");
     }
 
+    /**
+     * Dividing the current SimpleSymbol by a given one. This is only possible, when both SimpleSymbol have the same
+     * symbol and accomplished by dividing the factors and subtracting the given power from the current one.
+     * @param other SimpleSymbol to divide by.
+     * @return Result of the division
+     * @throws ArithmeticException When both SimpleSymbols don't have the same symbol
+     */
     public SimpleSymbol divide(SimpleSymbol other) {
         if (other.symbol == symbol) {
             factor = factor.divide(other.factor.clone());
