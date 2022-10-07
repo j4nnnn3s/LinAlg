@@ -59,6 +59,9 @@ public class Frac {
             throw new NumberFormatException("Not a valid fraction");
         }
         String[] parts = s.split("/");
+        if(Integer.parseInt(parts[1]) == 0) {
+            throw new ArithmeticException("Division by zero");
+        }
         return new Frac(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
     }
 

@@ -137,7 +137,7 @@ public class SmartNum extends MathObject {
      * @throws NumberFormatException if the fraction value is not of the correct form
      */
     private void setInt(Frac value){
-        if(value.getDenominator() != 0){
+        if(value.getDenominator() != 1){
             throw new NumberFormatException("The provided fraction is not of type n/1");
         }
         intValue = value.getNumerator();
@@ -425,4 +425,3 @@ public class SmartNum extends MathObject {
         DOUBLE
     }
 }
-
