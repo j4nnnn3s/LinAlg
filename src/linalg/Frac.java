@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import static linalg.MathHelper.gcd;
 
 /**
- * Class to calculate with fractions
+ * Class to do calculations with fractions
  */
 public class Frac {
 
